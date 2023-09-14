@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        Créer une nouvelle tache
+    </h1>
+    <div>
+       <% tasks.forEach(task => { %>
+            <p> <%=task.label%> </p>
+       <% }) %>
+    </div>
+    <form method="post" action="/task/create">
+        <label for="taskLabel">
+            Task Label
+        </label>
+        <input type="text" id="taskLabel" name="label" >
+
+        <select name="employees" id="employees" multiple>
+            <% employees.forEach(employee => { %>
+                <option value="<%=employee.matricule%>"> <%=employee.user.firstName%> <%=employee.user.lastName%> </option>
+            <% }) %>
+        </select>
+
+        <button type="submit">Créer</button>
+    </form>
+
+    <script>
+        new MultiSelectTag('employees')  // id
+    </script>
+</body>
+</html>

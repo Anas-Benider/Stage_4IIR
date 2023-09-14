@@ -54,7 +54,8 @@ model Departement{
 
 model Task{
   id String @id @default(uuid())
+  label String
   employees Employee[]
-  departementId String @unique
-  departement Departement @relation(fields: [departementId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+  departementId String? @unique
+  departement Departement? @relation(fields: [departementId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
 }
