@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Titles {
+  M
+  Mme
+  Mlle
+}
+
+model User{
+  id String @id @default(uuid())
+  cin String
+  title Titles 
+  firstName String
+  lastName String 
+  email String
+  password String
+  dateNaissance String
+  employe Employee?
+  admin Admin?
+}
+
+model Employee{
+  matricule String @id @default(uuid())
+  userId String @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  isChefDepartement Boolean @default(false)
+  departementId String? @unique
+  departement Departement? @relation(fields: [departementId],references: [id], onDelete:SetNull, onUpdate: Cascade )
+  tasks Task[]
+}
+
+model Admin {
+  id String @id @default(uuid())
+  userId String @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+}
+
+model Departement{
+  id String @id @default(uuid())
+  label String
+  employees Employee[]
+  tasks Task[]
+}
+
+model Task{
+  id String @id @default(uuid())
+  employees Employee[]
+  departementId String @unique
+  departement Departement @relation(fields: [departementId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
+}

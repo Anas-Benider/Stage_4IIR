@@ -1,8 +1,7 @@
 import express from 'express'
+import genController from '../controller/generalController.js'
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-    res.send('hello');
-})
+router.get('/', genController.home);
 
 export default router;
