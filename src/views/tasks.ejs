@@ -13,19 +13,41 @@
         Créer une nouvelle tache
     </h1>
     <div>
-       <% tasks.forEach(task => { %>
-            <p> <%=task.label%> </p>
-       <% }) %>
+        <% tasks.forEach(task => { %>
+            <div  style="display: flex; gap:5px;">
+                <p><%= task.label %></p>
+                <% task.employees.forEach(employee => { %>
+                    <p><%= employee.user.firstName %> <%= employee.user.lastName %></p>
+                <% }) %>
+                <p style="color: red;"><%= task.description %></p>
+                <form method="post" action="/task/delete">
+                    <input style="display: none;" type="text" name="taskId" value="<%= task.id %>">
+                    <button type="submit">
+                        supprimer
+                    </button>
+                </form>
+            </div>
+        <% }) %>
     </div>
     <form method="post" action="/task/create">
+        
         <label for="taskLabel">
             Task Label
         </label>
         <input type="text" id="taskLabel" name="label" >
 
+        <label for="description">
+            Description
+        </label>
+        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
         <select name="employees" id="employees" multiple>
-            <% employees.forEach(employee => { %>
+            <% employees.map(employee => { %>
                 <option value="<%=employee.matricule%>"> <%=employee.user.firstName%> <%=employee.user.lastName%> </option>
+                <option value="1">abc</option>
+                <option value="12">asddas</option>
+                <option value="123">vxczvz</option>
+                <option value="1234">yerty</option>
             <% }) %>
         </select>
 

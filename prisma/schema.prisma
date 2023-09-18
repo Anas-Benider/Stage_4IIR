@@ -55,6 +55,7 @@ model Departement{
 model Task{
   id String @id @default(uuid())
   label String
+  description String @default("")
   employees Employee[]
   departementId String? @unique
   departement Departement? @relation(fields: [departementId], references: [id], onDelete: Cascade, onUpdate: Cascade) 
