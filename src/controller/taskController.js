@@ -16,7 +16,7 @@ const getTaskPage = async (req,res) =>{
         req.session.newTaskID = undefined;
     }
 
-    return res.render('employees',{tasks,employees})
+    return res.render('tasks',{tasks,employees})
 }
 
 const createTask = async (req,res) => {
@@ -34,8 +34,20 @@ const deleteTaskById = async (req, res) => {
     res.redirect('/task');
 }
 
+const removeEmployee = async (req, res) => {
+    try {
+        const {taskId, employeeMatricule} = req.body;
+        console.log(taskId,employeeMatricule);
+        const updatedTask = await tasksService.removeEmployee(taskId, employeeMatricule);
+        res.redirect('/task');    
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 export default {
     getTaskPage,
     createTask,
-    deleteTaskById
+    deleteTaskById,
+    removeEmployee
 }

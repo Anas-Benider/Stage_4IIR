@@ -72,8 +72,25 @@ const deleteTaskById = async (id) => {
     }
 }
 
+const removeEmployee = async (taskId, employeeMatricule) => {
+    let task = await prisma.task.update({
+        where:{
+            id: taskId,
+        },
+        data:{
+            employees:{
+                disconnect:[
+                    {matricule: employeeMatricule}
+                ]
+            }
+        }
+    })
+    return task;
+}
+
 export default {
     createTask,
     getAllTasks,
-    deleteTaskById
+    deleteTaskById,
+    removeEmployee
 }
