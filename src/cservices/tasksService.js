@@ -3,9 +3,18 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient();
 
 const createTask = async (label, ids, description) => {
-    const empIds = [ids].map((id)=>{
-        return {matricule: id};
-    })
+    let empIds;
+
+    if (Array.isArray(ids)) {
+        empIds = ids.map((id) => {
+            return { matricule: id };
+        });
+    } else if (typeof ids === 'string') {
+        empIds = [{ matricule: ids }];
+    } else {
+        // Handle other data types or unexpected cases
+        empIds = []; // You can provide a default value or handle the error accordingly
+    }
 
     const task = await prisma.task.create({
         data:{

@@ -16,7 +16,7 @@ const getTaskPage = async (req,res) =>{
         req.session.newTaskID = undefined;
     }
 
-    return res.render('tasks',{tasks,employees})
+    return res.render('employees',{tasks,employees})
 }
 
 const createTask = async (req,res) => {

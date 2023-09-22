@@ -6,53 +6,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
     <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+    <style>
+        html,body{
+            height: 100%;
+            width: 100%;
+        }
+    </style>
     <title>Document</title>
+    <link href="css/style.css" rel="stylesheet">
 </head>
-<body>
-    <h1>
-        Créer une nouvelle tache
-    </h1>
-    <div>
-        <% tasks.forEach(task => { %>
-            <div  style="display: flex; gap:5px;">
-                <p><%= task.label %></p>
-                <% task.employees.forEach(employee => { %>
-                    <p><%= employee.user.firstName %> <%= employee.user.lastName %></p>
-                <% }) %>
-                <p style="color: red;"><%= task.description %></p>
-                <form method="post" action="/task/delete">
-                    <input style="display: none;" type="text" name="taskId" value="<%= task.id %>">
-                    <button type="submit">
-                        supprimer
-                    </button>
-                </form>
+<body class="w-full py-10 gap-5 px-10 bg-base-200 h-full flex flex-col justify-center">
+    <h1 class="text-center text-4xl text-slate-600 font-bold">Gestionnaire des taches</h1>
+
+    <div class="grid grid-cols-3 w-full place-content-center">
+        <div class="flex justify-center items-center flex-col border-2 rounded-3xl bg-base-100 py-10">
+            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
+                Créer une nouvelle tache
+            </h1>
+            <form method="post" action="/task/create" class="flex flex-col gap-2">
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Intitulé de la tâche</span>
+                    </label>
+                    <input type="text" name="label" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Description</span>
+                    </label>
+                    <textarea name="description" class="textarea textarea-bordered h-24" placeholder="Entrer le texte ici"></textarea>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Affecter aux employé</span>
+                    </label>
+                    <select name="employees" id="employees" multiple>
+                        <% employees.map(employee => { %>
+                            <option value="<%=employee.matricule%>"> <%=employee.user.firstName%> <%=employee.user.lastName%> </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <button class="mt-5 btn btn-outline btn-success btn-wide btn-sm hover:!text-white" type="submit">Créer</button>
+            </form>
+        </div>
+        <div class="flex col-span-2 py-10 max-h-full flex-col border-2 rounded-3xl bg-base-100 ">
+            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
+                Liste des tâches ajoutées
+            </h1>
+            <div class="overflow-y-auto">
+                <table class="table table-xs text-center">
+                    <thead>
+                        <tr>
+                            <th>libellé</th>
+                            <th>description</th>
+                            <th>employés</th>
+                            <th>supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tasks.forEach(task=> { %>
+                            <tr>
+                                <td>
+                                    <%= task.label %>
+                                </td>
+                                <td>
+                                    <p>
+                                        <%= task.description %>
+                                    </p>
+                                </td>
+                                <td>
+                                    <label for="my-drawer" class="btn btn-info btn-outline btn-xs drawer-button">consulter</label>
+                                </td>
+                                <td>
+                                    <form method="post" action="/task/delete">
+                                        <input class="hidden" type="text" name="taskId" value="<%= task.id %>">
+                                        <button type="submit" class="btn btn-error btn-outline btn-xs" >supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                        </tbody>
+                </table>
             </div>
-        <% }) %>
+        </div>
     </div>
-    <form method="post" action="/task/create">
-        
-        <label for="taskLabel">
-            Task Label
-        </label>
-        <input type="text" id="taskLabel" name="label" >
-
-        <label for="description">
-            Description
-        </label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
-
-        <select name="employees" id="employees" multiple>
-            <% employees.map(employee => { %>
-                <option value="<%=employee.matricule%>"> <%=employee.user.firstName%> <%=employee.user.lastName%> </option>
-                <option value="1">abc</option>
-                <option value="12">asddas</option>
-                <option value="123">vxczvz</option>
-                <option value="1234">yerty</option>
-            <% }) %>
-        </select>
-
-        <button type="submit">Créer</button>
-    </form>
+    <div class="bg-slate-700/75 h-screen w-screen absolute top-0 left-0 flex justify-center items-center">
+        <div class="w-2/4 px-10 bg-white py-10 rounded-lg ">
+            <h1 class="text-xl text-center font-bold mb-5">
+                Liste des employés affectés à la tâche
+            </h1>
+            <div class="overflow-y-auto ">
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra text-center">
+                        <!-- head -->
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Département</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- row 1 -->
+                            <tr>
+                                <td>Benider</td>
+                                <td>Anas</td>
+                                <td>Systèmes d'Information</td>
+                                <td>
+                                    <button class="btn btn-xs btn-error btn-outline hover:!text-white">
+                                        Retirer
+                                    </button>
+                                </td>
+                            </tr>
+                            <!-- row 2 -->
+                            <tr>
+                                <td>test</td>
+                                <td>Test</td>
+                                <td>RH</td>
+                                <td>
+                                    <button class="btn btn-xs btn-error btn-outline hover:!text-white">
+                                        Retirer
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         new MultiSelectTag('employees')  // id

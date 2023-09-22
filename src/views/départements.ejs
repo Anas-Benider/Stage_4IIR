@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <title>Document</title>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="w-full py-10 gap-5 px-10 bg-base-200 h-full flex flex-col justify-center">
+    <h1 class="text-center text-4xl text-slate-600 font-bold">Gestionnaire des départements</h1>
+
+    <div class="grid grid-cols-3 w-full place-content-center">
+        <div class="flex justify-center items-center flex-col border-2 rounded-3xl bg-base-100 py-10">
+            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
+                Créer un nouvel département
+            </h1>
+            <form method="post" action="/task/create" class="flex flex-col gap-2">
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="label-text">Nom du département</span>
+                    </label>
+                    <input type="text" name="label" class="input input-bordered w-full max-w-xs" />
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Chef du département</span>
+                    </label>
+                    <select class="select select-bordered w-full max-w-xs" name="chef">
+                        <option disabled selected>choisissez le chef du dep</option>
+                        <% employees.map(employee=> { %>
+                            <option value="<%=employee.matricule%>">
+                                <%=employee.user.firstName%>
+                                    <%=employee.user.lastName%>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+                <button class="mt-5 btn btn-outline btn-success btn-wide btn-sm hover:!text-white"
+                    type="submit">Créer</button>
+            </form>
+        </div>
+        <div class="flex col-span-2 py-10 max-h-full flex-col border-2 rounded-3xl bg-base-100 ">
+            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
+                Liste des départements ajoutées
+            </h1>
+            <div class="overflow-y-auto">
+                <table class="table table-xs text-center">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Chef de département</th>
+                            <th>employés</th>
+                            <th>supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tasks.forEach(task=> { %>
+                            <tr>
+                                <td>
+                                    <%= task.label %>
+                                </td>
+                                <td>
+                                    <p>
+                                        <%= task.description %>
+                                    </p>
+                                </td>
+                                <td>
+                                    <label for="my-drawer"
+                                        class="btn btn-info btn-outline btn-xs drawer-button">consulter</label>
+                                </td>
+                                <td>
+                                    <form method="post" action="/task/delete">
+                                        <input class="hidden" type="text" name="taskId" value="<%= task.id %>">
+                                        <button type="submit"
+                                            class="btn btn-error btn-outline btn-xs">supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
