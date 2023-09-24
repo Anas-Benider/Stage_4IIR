@@ -1,9 +1,3 @@
-
-function toggleMenu() {
-    const menu = document. getElementsByClassName('menu');
-    menu[0].classList.toggle('hidden');
-}
-
 const menuEntries = document.querySelectorAll('.menuEntry');
 const parentElement = document.querySelector('.text');
 

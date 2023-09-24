@@ -28,11 +28,12 @@ const getAll = async () => {
 
 const create = async (label, chefId, employeesIds) => {
     try {
+        console.log(employeesIds);
         const department = await prisma.departement.create({
             data: {
                 label,
-                chef: {
-                    connect: {
+                chef:{
+                    connect:{
                         matricule: chefId
                     }
                 },
