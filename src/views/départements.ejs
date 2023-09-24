@@ -1,43 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html,
-        body {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
-    <title>Document</title>
-    <link href="css/style.css" rel="stylesheet">
-</head>
-
-<body class="w-full py-10 gap-5 px-10 bg-base-200 h-full flex flex-col justify-center">
+<div class="w-full py-10 gap-5 px-10 bg-base-200 h-full flex flex-col justify-center">
     <h1 class="text-center text-4xl text-slate-600 font-bold">Gestionnaire des départements</h1>
-
-    <div class="grid grid-cols-3 w-full place-content-center">
-        <div class="flex justify-center items-center flex-col border-2 rounded-3xl bg-base-100 py-10">
-            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
-                Créer un nouvel département
-            </h1>
-            <form method="post" action="/task/create" class="flex flex-col gap-2">
-                <div class="form-control w-full max-w-xs">
-                    <label class="label">
-                        <span class="label-text">Nom du département</span>
-                    </label>
-                    <input type="text" name="label" class="input input-bordered w-full max-w-xs" />
+        <div class="flex col-span-2 py-10 max-h-full flex-col border-2 rounded-3xl bg-base-100 ">
+            <div class="overflow-y-auto">
+                <table class="table table-xs text-center border-2">
+                    <thead class="border-2">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Chef de département</th>
+                            <th>employés</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-bold text-lg">
+                        <% departments.forEach(dep => { %>
+                            <tr>
+                                <td><%= dep.label%></td>
+                                <td>---------</td>
+                                <td><%= (dep.employees).length %></td>
+                                <td>
+                                    <div class="flex justify-center gap-2">
+                                        <button class="btn btn-xs btn-warning btn-outline hover:!text-white">
+                                            Modifier
+                                        </button>
+                                        <form action="/deps/remove" method="post">
+                                            <input type="text" name="id" class="hidden" value="<%=dep.id%>">
+                                            <button class="btn btn-xs btn-error btn-outline hover:!text-white">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                <div class="w-full flex justify-center mt-10">
+                    <button class="btn btn-sm btn-wide btn-success btn-outline"
+                        onclick="toggleCreateDepsForm()"
+                    >
+                        Créer un nouveau département
+                    </button>
                 </div>
-                <div class="form-control">
-                    <label class="label">
-                        <span class="label-text">Chef du département</span>
-                    </label>
-                    <select class="select select-bordered w-full max-w-xs" name="chef">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-full h-full absolute top-0 left-0 bg-slate-700/40 flex justify-center items-center hidden"
+    id="createDepartment"
+>
+    <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card-body items-center text-center gap-5">
+            <h1 class="card-title">Créer un nouveau département</h1>
+            <form action="/deps/create" method="post" class="flex flex-col gap-5">
+                <div>
+                    <label for="label">Intitulé du département</label>
+                    <input type="text" name="label" id="label" class="input input-bordered w-full input-sm" />
+                </div>
+                <div>
+                    <label for="chef">Chef du département</label>
+                    <select id="chef" class="select select-bordered w-full select-sm" name="chef">
                         <option disabled selected>choisissez le chef du dep</option>
-                        <% employees.map(employee=> { %>
+                        <% employeesForChefDepartment.map(employee=> { %>
                             <option value="<%=employee.matricule%>">
                                 <%=employee.user.firstName%>
                                     <%=employee.user.lastName%>
@@ -45,53 +68,53 @@
                         <% }) %>
                     </select>
                 </div>
-                <button class="mt-5 btn btn-outline btn-success btn-wide btn-sm hover:!text-white"
-                    type="submit">Créer</button>
+                <div class="w-full">
+                    <label for="employees">
+                        Employés
+                    </label>
+                    <div class="w-full">
+                        <div class="base">
+                            <div class="container">
+                                <div class="text">
+                                
+                                </div>
+                            </div>
+                            <div class="arrow">
+                                <i class="fa-solid fa-chevron-down hoverPointer" onclick="toggleMenu()"></i>
+                            </div>
+                        </div>
+                        <div class="menu hidden">
+                            <% employees.map(employee => { %>
+                                <div class="menuEntry">
+                                    <p><%=employee.user.firstName%> <%=employee.user.lastName%></p>
+                                    <input type="text" value="<%=employee.matricule%>" class="hidden">
+                                </div>
+                                <div class="menuEntry">
+                                    <p><%=employee.user.firstName%> <%=employee.user.lastName%></p>
+                                    <input type="text" value="<%=employee.matricule%>" class="hidden">
+                                </div>
+                                <div class="menuEntry">
+                                    <p><%=employee.user.firstName%> <%=employee.user.lastName%></p>
+                                    <input type="text" value="<%=employee.matricule%>" class="hidden">
+                                </div>
+                                <div class="menuEntry">
+                                    <p><%=employee.user.firstName%> <%=employee.user.lastName%></p>
+                                    <input type="text" value="<%=employee.matricule%>" class="hidden">
+                                </div>
+                            <% }) %>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-actions justify-center gap-5 mt-5">
+                    <button type="reset" class="btn btn-outline btn-sm w-32 btn-error"
+                        onclick="toggleCreateDepsForm()"
+                    >Annuler</button>
+                    <button type="submit" class="btn btn-outline btn-sm w-32 btn-success">Créer</button>
+                </div>
             </form>
         </div>
-        <div class="flex col-span-2 py-10 max-h-full flex-col border-2 rounded-3xl bg-base-100 ">
-            <h1 class="text-slate-600 font-semibold text-center text-4xl mb-7">
-                Liste des départements ajoutées
-            </h1>
-            <div class="overflow-y-auto">
-                <table class="table table-xs text-center">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>Chef de département</th>
-                            <th>employés</th>
-                            <th>supprimer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% tasks.forEach(task=> { %>
-                            <tr>
-                                <td>
-                                    <%= task.label %>
-                                </td>
-                                <td>
-                                    <p>
-                                        <%= task.description %>
-                                    </p>
-                                </td>
-                                <td>
-                                    <label for="my-drawer"
-                                        class="btn btn-info btn-outline btn-xs drawer-button">consulter</label>
-                                </td>
-                                <td>
-                                    <form method="post" action="/task/delete">
-                                        <input class="hidden" type="text" name="taskId" value="<%= task.id %>">
-                                        <button type="submit"
-                                            class="btn btn-error btn-outline btn-xs">supprimer</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-</body>
+</div>
 
-</html>
+<script src="js/handleDepartments.js"></script>
+<script src="js/select.js"></script>

@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-import session from "express-session";
 import employeesService from "../cservices/employeesService.js";
 import tasksService from "../cservices/tasksService.js";
-const prisma = new PrismaClient();
 
 const getTaskPage = async (req,res) =>{
     const tasks = await tasksService.getAllTasks();
@@ -15,8 +12,7 @@ const getTaskPage = async (req,res) =>{
         })
         req.session.newTaskID = undefined;
     }
-
-    return res.render('tasks',{tasks,employees})
+    return res.render('partials/frame', { partialPath:'../tasks',tasks,employees})
 }
 
 const createTask = async (req,res) => {

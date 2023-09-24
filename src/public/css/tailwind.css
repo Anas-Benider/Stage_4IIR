@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.base {
+    @apply select-bordered py-1 border-1 rounded-lg h-14 flex w-full;
+    border-color: #d7dce1;
+}
+.container{
+    @apply flex-grow py-1;
+    white-space: nowrap;
+}
+
+.border-1{
+    border: 1px solid;
+}
+
+.border-l-1{
+    border-left: 1px solid;
+}
+
+.border-b-1{
+    border-bottom: 1px solid;
+}
+
+.text {
+  @apply px-2 py-1 gap-1 h-full items-center flex overflow-x-scroll;
+}
+
+
+.arrow{
+    @apply border-l-1 px-2 flex justify-center items-center;
+    border-color: #d7dce1;
+}
+
+.hoverPointer {
+    @apply hover:cursor-pointer;
+}
+
+.choice{
+    @apply flex my-2 pl-2 justify-between items-center gap-2 border-1 border-neutral rounded-lg ;
+}
+
+.removeEntry{
+    @apply px-1 border-l-1 rounded-r-lg hover:bg-error hover:text-white;
+}
+
+.menu{
+    @apply border-1 rounded-lg w-full max-h-32 overflow-y-auto text-center grid grid-cols-1;
+    border-color: #d7dce1;
+}
+
+.menuEntry{
+    @apply border-b-1 last-of-type:border-0 p-1 py-2 w-full hover:bg-primary hover:!text-white text-lg;
+    border-color: #d7dce1;
+}

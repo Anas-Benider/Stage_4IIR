@@ -7,6 +7,7 @@ import userRouter from './routers/usersRouter.js'
 import session from 'express-session';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import departmentRouter from './routers/departmentRouter.js';
 const app = express();
 
 dotenv.config()
@@ -31,6 +32,7 @@ app.use(generalRouter)
 app.use('/task',taskRouter)
 app.use('/user',userRouter)
 app.use('/employee',employeesRouter)
+app.use('/deps', departmentRouter)
 
 app.listen(process.env.PORT, ()=>{
     console.log('connected to port '+process.env.PORT);

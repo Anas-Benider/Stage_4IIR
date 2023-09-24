@@ -38,7 +38,6 @@ const createTask = async (label, ids, description) => {
 const getAllTasks = async () => {
     const tasks = await prisma.task.findMany({
         include:{
-            departement: true,
             employees: {
                 include:{
                     user: true

@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
+//explain: Selects all the employees that are not chefs
 const taskSelectEmployees = async () => {
     const employees = await prisma.employee.findMany({
         where:{
-            isChefDepartement: false,
-            //departementId: 
+            chefOf: null,
         },
         select:{
             matricule: true,
