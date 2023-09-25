@@ -13,8 +13,8 @@ const getAll = async (req, res) => {
 
 const create = async (req, res) => {
 
-    console.log(req.body);
-    /* let { label, chef, employees } = req.body
+    let { label, chef, chosenEntries: employees } = req.body
+    
     if (typeof employees === "string")
     {
         employees = [employees]
@@ -24,7 +24,7 @@ const create = async (req, res) => {
             matricule: employeeId
         }
     })
-    const department = await departmentService.create(label, chef, employees); */
+    const department = await departmentService.create(label, chef, employees);
     return res.redirect('/deps');
 
 }

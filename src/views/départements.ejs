@@ -83,7 +83,7 @@
                                 <i class="fa-solid fa-chevron-down hoverPointer" onclick="toggleMenu()"></i>
                             </div>
                         </div>
-                        <div class="menu hidden">
+                        <div class="menu" id="menu">
                             <% employees.map(employee => { %>
                                 <div class="menuEntry">
                                     <p><%=employee.user.firstName%> <%=employee.user.lastName%></p>

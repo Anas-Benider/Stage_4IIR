@@ -34,8 +34,8 @@ model Employee{
   userId String @unique
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   chefOf Departement? @relation("chef")
-  departementId String? @unique
-  departement Departement? @relation(fields: [departementId],references: [id], onDelete:SetNull, onUpdate: Cascade )
+  departementId String? 
+  departement Departement? @relation("emps",fields: [departementId],references: [id], onDelete:SetNull, onUpdate: Cascade )
   tasks Task[]
 }
 
@@ -50,7 +50,7 @@ model Departement{
   label String
   chefId String? @unique
   chef Employee? @relation("chef", fields: [chefId], references: [matricule], onDelete: SetNull, onUpdate: Cascade)
-  employees Employee[]
+  employees Employee[] @relation("emps")
 }
 
 model Task{
