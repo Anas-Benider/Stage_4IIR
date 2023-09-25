@@ -2169,11 +2169,10 @@ html {
 }
 
 .text {
-  display: flex;
   height: 100%;
   align-items: center;
   gap: 0.25rem;
-  overflow-x: scroll;
+  overflow-y: scroll;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   padding-top: 0.25rem;

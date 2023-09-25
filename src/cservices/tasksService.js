@@ -23,6 +23,13 @@ const createTask = async (label, ids, description) => {
                 connect:empIds
             },
             description
+        },
+        include:{
+            employees: {
+                include:{
+                    user: true
+                }
+            }
         }
     })
 

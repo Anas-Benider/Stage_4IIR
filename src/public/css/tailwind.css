@@ -24,7 +24,7 @@
 }
 
 .text {
-  @apply px-2 py-1 gap-1 h-full items-center flex overflow-x-scroll;
+  @apply px-2 py-1 gap-1 h-full items-center overflow-y-scroll;
 }
 
 

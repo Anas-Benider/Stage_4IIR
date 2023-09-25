@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get('/', taskController.getTaskPage);
 router.post('/create', taskController.createTask);
-router.post('/delete', taskController.deleteTaskById)
-router.post('/removeEmployee', taskController.removeEmployee)
+router.put('/removeEmployee', taskController.removeEmployee)
+router.delete('/delete', taskController.deleteTaskById)
 export default router;

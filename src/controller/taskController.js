@@ -4,38 +4,28 @@ import tasksService from "../cservices/tasksService.js";
 const getTaskPage = async (req,res) =>{
     const tasks = await tasksService.getAllTasks();
     const employees = await employeesService.taskSelectEmployees();
-    const newTaskId = req.session.newTaskID;
-    if(newTaskId)
-    {
-        const newTask = tasks.find((task)=>{
-            task.id === newTaskId;
-        })
-        req.session.newTaskID = undefined;
-    }
-    return res.render('partials/frame', { partialPath:'../tasks',tasks,employees})
+
+    return res.status(200).json({tasks, employees});
 }
 
 const createTask = async (req,res) => {
-    const {label, employees: employeesIds, description} = req.body;
-    const task = await tasksService.createTask(label, employeesIds, description);
-    req.session.newTaskID = task.id;
-    res.redirect('/task');
+    const {label, selectedEmployees, description} = req.body;
+    const task = await tasksService.createTask(label, selectedEmployees, description);
+    return res.status(201).json(task)
 }
 
 
 const deleteTaskById = async (req, res) => {
     const {taskId} = req.body;
     const task = await tasksService.deleteTaskById(taskId);
-    req.session.msg = "La tâche "+task.label+" est supprimée avec succès"
-    res.redirect('/task');
+    return res.status(200).json(task)
 }
 
 const removeEmployee = async (req, res) => {
     try {
-        const {taskId, employeeMatricule} = req.body;
-        console.log(taskId,employeeMatricule);
-        const updatedTask = await tasksService.removeEmployee(taskId, employeeMatricule);
-        res.redirect('/task');    
+        const {empId, taskId} = req.body;
+        const updatedTask = await tasksService.removeEmployee(taskId, empId);
+        return res.status(200).json(updatedTask)
     } catch (err) {
         console.error(err);
     }

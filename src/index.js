@@ -8,6 +8,7 @@ import session from 'express-session';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import departmentRouter from './routers/departmentRouter.js';
+import cors from 'cors';
 const app = express();
 
 dotenv.config()
@@ -21,7 +22,7 @@ const __dirname = dirname(__filename);
 
 // Serve static files from the 'public' directory
 app.use(express.static(__dirname + '/public'));
-
+app.use(cors())
 app.use(session({
     secret: process.env.SESSIONSECRET,
     resave: false,
