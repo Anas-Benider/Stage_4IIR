@@ -16,11 +16,9 @@ CREATE TABLE `User` (
 CREATE TABLE `Employee` (
     `matricule` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `isChefDepartement` BOOLEAN NOT NULL DEFAULT false,
-    `departementId` VARCHAR(191) NULL,
+    `departementId` VARCHAR(191) NOT NULL,
 
     UNIQUE INDEX `Employee_userId_key`(`userId`),
-    UNIQUE INDEX `Employee_departementId_key`(`departementId`),
     PRIMARY KEY (`matricule`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -42,11 +40,22 @@ CREATE TABLE `Departement` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Task` (
+CREATE TABLE `chefDepartement` (
     `id` VARCHAR(191) NOT NULL,
+    `chefId` VARCHAR(191) NOT NULL,
     `departementId` VARCHAR(191) NOT NULL,
 
-    UNIQUE INDEX `Task_departementId_key`(`departementId`),
+    UNIQUE INDEX `chefDepartement_chefId_key`(`chefId`),
+    UNIQUE INDEX `chefDepartement_departementId_key`(`departementId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Task` (
+    `id` VARCHAR(191) NOT NULL,
+    `label` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL DEFAULT '',
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -63,13 +72,16 @@ CREATE TABLE `_EmployeeToTask` (
 ALTER TABLE `Employee` ADD CONSTRAINT `Employee_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Employee` ADD CONSTRAINT `Employee_departementId_fkey` FOREIGN KEY (`departementId`) REFERENCES `Departement`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `Employee` ADD CONSTRAINT `Employee_departementId_fkey` FOREIGN KEY (`departementId`) REFERENCES `Departement`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Admin` ADD CONSTRAINT `Admin_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Task` ADD CONSTRAINT `Task_departementId_fkey` FOREIGN KEY (`departementId`) REFERENCES `Departement`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `chefDepartement` ADD CONSTRAINT `chefDepartement_chefId_fkey` FOREIGN KEY (`chefId`) REFERENCES `Employee`(`matricule`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `chefDepartement` ADD CONSTRAINT `chefDepartement_departementId_fkey` FOREIGN KEY (`departementId`) REFERENCES `Departement`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_EmployeeToTask` ADD CONSTRAINT `_EmployeeToTask_A_fkey` FOREIGN KEY (`A`) REFERENCES `Employee`(`matricule`) ON DELETE CASCADE ON UPDATE CASCADE;

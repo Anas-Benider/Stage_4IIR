@@ -18,11 +18,11 @@ enum Titles {
 
 model User{
   id String @id @default(uuid())
-  cin String
+  cin String @unique
   title Titles 
   firstName String
   lastName String 
-  email String
+  email String @unique
   password String
   dateNaissance String
   employe Employee?
@@ -33,9 +33,9 @@ model Employee{
   matricule String @id @default(uuid())
   userId String @unique
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  chefOf Departement? @relation("chef")
-  departementId String? 
-  departement Departement? @relation("emps",fields: [departementId],references: [id], onDelete:SetNull, onUpdate: Cascade )
+  departementId String?
+  departement Departement? @relation(fields: [departementId], references: [id])
+  chefOf chefDepartement?
   tasks Task[]
 }
 
@@ -48,9 +48,16 @@ model Admin {
 model Departement{
   id String @id @default(uuid())
   label String
-  chefId String? @unique
-  chef Employee? @relation("chef", fields: [chefId], references: [matricule], onDelete: SetNull, onUpdate: Cascade)
-  employees Employee[] @relation("emps")
+  withChef chefDepartement?
+  employees Employee[]
+}
+
+model chefDepartement{
+  id String @id @default(uuid())
+  chefId String @unique
+  chef Employee? @relation(fields: [chefId], references: [matricule])
+  departementId String @unique
+  departement Departement? @relation(fields: [departementId], references: [id])
 }
 
 model Task{

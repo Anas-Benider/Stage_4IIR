@@ -47,7 +47,8 @@ const getAllTasks = async () => {
         include:{
             employees: {
                 include:{
-                    user: true
+                    user: true,
+                    departement: true
                 }
             }
         }

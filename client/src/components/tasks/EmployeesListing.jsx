@@ -2,6 +2,8 @@ import { useEffect } from "react";
 
 const EmployeesListing = ({taskId, employees, setter, removeTask}) => {
 
+  console.log('emps', employees);
+
     const removeEmployeeFromTask = (empId, taskId) => {
         fetch('http://localhost:3000/task/removeEmployee',{
             method:'put',
@@ -25,7 +27,7 @@ const EmployeesListing = ({taskId, employees, setter, removeTask}) => {
     useEffect(()=>{
         if(employees.length === 0)
         {
-            removeTask(taskId)
+          removeTask(taskId)
         }
     },[employees])
     
@@ -58,7 +60,7 @@ const EmployeesListing = ({taskId, employees, setter, removeTask}) => {
                         <tr key={emp.matricule}>
                             <td>{emp.user.lastName}</td>
                             <td>{emp.user.firstName}</td>
-                            <td>{emp.departement || '-------'}</td>
+                            <td>{emp.departement?.label || '-------'}</td>
                             <td>
                                 <button className="btn btn-xs btn-outline btn-error hover:!text-white"
                                     onClick={()=>{removeEmployeeFromTask(emp.matricule, taskId)}}

@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get('/', departmentController.getAll);
 router.post('/create', departmentController.create);
-// router.post('/update', departmentController.update);
-router.post('/remove', departmentController.remove);
+router.put('/changeChef', departmentController.changeChef);
+router.patch('/update', departmentController.update);
+router.delete('/', departmentController.remove);
 export default router;
